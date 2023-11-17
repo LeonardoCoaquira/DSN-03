@@ -17,6 +17,8 @@ CORS(app)  # Habilita CORS para toda la aplicación
 
 
 # Configuración de la conexión a Redis desde la variable de entorno o una URL predeterminada
+redis_conn = redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
+
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_form():
@@ -69,6 +71,8 @@ def upload():
 
         # Guardar la figura como imagen en Redis
         img_binary = fig.to_image(format='png')
+        redis_conn.set('ratings_image', img_binary)
+
         # Retornar el contenido binario de la imagen y su tipo MIME
         return send_file(io.BytesIO(img_binary), mimetype='image/png')
 
