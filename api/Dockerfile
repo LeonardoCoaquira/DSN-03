@@ -18,5 +18,7 @@ COPY . /app
 # Instala las dependencias necesarias
 RUN pip install -r requirements.txt
 
+EXPOSE 5000
+
 # CMD para ejecutar tu aplicación
 CMD ["python", "./app.py"]
