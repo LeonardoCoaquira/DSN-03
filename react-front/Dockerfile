@@ -1,5 +1,5 @@
-# Usa una imagen base de Node.js
-FROM node:14
+# Etapa de construcción (Build Stage) con imagen completa de Node.js
+FROM node:14 AS build
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
@@ -16,8 +16,14 @@ COPY . .
 # Compila la aplicación React para producción
 RUN npm run build
 
-# Expone el puerto 80 en la imagen (esto es solo informativo, no es necesario para aplicaciones de una sola página)
+# Etapa de producción con imagen alpine
+FROM nginx:alpine
+
+# Copia los archivos de construcción de la etapa anterior a la ubicación correcta en el servidor nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Expone el puerto 80 en la imagen (por si acaso, aunque no es necesario para aplicaciones de una sola página)
 EXPOSE 80
 
-# Comando para ejecutar la aplicación cuando se inicia el contenedor
-CMD ["npm", "start"]
+# Comando para iniciar nginx cuando se inicia el contenedor
+CMD ["nginx", "-g", "daemon off;"]
