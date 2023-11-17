@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Expone el puerto 80 en la imagen (por si acaso, aunque no es necesario para aplicaciones de una sola página)
-EXPOSE 80
+EXPOSE 3000
 
 # Comando para iniciar nginx cuando se inicia el contenedor
 CMD ["nginx", "-g", "daemon off;"]
