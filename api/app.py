@@ -5,13 +5,15 @@ import io
 import os
 import redis
 
-app = Flask(__name__)
-
 from flask import Flask
 from flask_cors import CORS  # Importa la extensión CORS
+CORS(app)  # Habilita CORS para toda la aplicación
+
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
-CORS(app)  # Habilita CORS para toda la aplicación
+csrf = CSRFProtect(app)
+
 
 # Resto de tu código Flask
 
