@@ -8,7 +8,7 @@ import redis
 app = Flask(__name__)
 from flask import Flask
 from flask_cors import CORS 
-CORS(app, resources={r"/upload": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/upload": {"origins": "http://react-app:3000"}})
 
 # Resto de tu código Flask
 
