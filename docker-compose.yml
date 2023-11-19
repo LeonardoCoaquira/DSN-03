@@ -7,16 +7,10 @@ services:
       - "5000:5000"
     environment:
       - REDIS_URL=redis://redis:6379
-    networks:
-      - red
   react-app:
     build: ./react-front
     ports:
       - "80:80"
-    environment:
-      - API_ENDPOINT=http://api:5000/upload
-    networks:
-      - red
   redis:
     image: redis
 networks:
