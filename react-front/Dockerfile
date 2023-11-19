@@ -1,29 +1,29 @@
-# Etapa de construcción (Build Stage) con imagen completa de Node.js
-FROM node:14 AS build
+# Utilizar la imagen oficial de Node.js LTS
+FROM node:14 as build
 
-# Establece el directorio de trabajo en /app
+# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copia el package.json y package-lock.json a la imagen
+# Copiar los archivos de la aplicación (package.json y package-lock.json) para aprovechar la caché de capas de Docker
 COPY package*.json ./
 
-# Instala las dependencias del proyecto
+# Instalar dependencias
 RUN npm install
 
-# Copia el contenido del directorio actual al directorio de trabajo en la imagen
+# Copiar el resto de la aplicación
 COPY . .
 
-# Compila la aplicación React para producción
+# Construir la aplicación React
 RUN npm run build
 
-# Etapa de producción con imagen alpine
+# Etapa de producción
 FROM nginx:alpine
 
-# Copia los archivos de construcción de la etapa anterior a la ubicación correcta en el servidor nginx
+# Copiar los archivos construidos de la etapa de construcción a la carpeta de Nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expone el puerto 80 en la imagen (por si acaso, aunque no es necesario para aplicaciones de una sola página)
-EXPOSE 3000
+# Exponer el puerto 80 (puerto predeterminado de Nginx)
+EXPOSE 80
 
-# Comando para iniciar nginx cuando se inicia el contenedor
+# Comando para iniciar el servidor Nginx
 CMD ["nginx", "-g", "daemon off;"]
