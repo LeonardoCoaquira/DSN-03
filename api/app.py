@@ -8,7 +8,7 @@ import redis
 from flask_cors import CORS 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/upload": {"origins": "*"}})
 
 # Resto de tu código Flask
 

@@ -4,7 +4,6 @@ import axios from 'axios';
 const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, '$1');
 axios.defaults.headers.common['X-XSRF-TOKEN'] = csrfToken;
 
-
 const App = () => {
   const [file, setFile] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
@@ -19,8 +18,7 @@ const App = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await axios.post('http://localhost:5000/upload', formData, {
+      const response = await axios.post('http://api:5000/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
