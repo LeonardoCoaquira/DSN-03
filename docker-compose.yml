@@ -8,16 +8,18 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
     networks:
-      - red
+      - dsn-03-red  # Nombre específico para la red de la API
+
   react:
     build: ./react-front
     ports:
       - "80:80"
     networks:
-      - red
+      - dsn-03-red  # Usa el mismo nombre de red que la API
+
   redis:
     image: redis
 
 networks:
-  red:
+  dsn-03-red:
     driver: bridge
