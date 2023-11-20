@@ -21,9 +21,9 @@ FROM nginx:alpine
 
 # Copiar los archivos construidos de la etapa de construcción a la carpeta de Nginx
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Exponer el puerto 80 (puerto predeterminado de Nginx)
-EXPOSE 80
+COPY nginx.conf /etc/nginx/conf.d
 
 # Comando para iniciar el servidor Nginx
+EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
