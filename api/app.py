@@ -5,10 +5,10 @@ import io
 import os
 import redis
 
-app = Flask(__name__)
-from flask import Flask
 from flask_cors import CORS 
-CORS(app, resources={r"/upload": {"origins": "*"}})
+
+app = Flask(__name__)
+CORS(app)
 
 # Resto de tu código Flask
 
