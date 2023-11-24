@@ -1,6 +1,6 @@
 FROM node:14
 
-WORKDIR /app
+WORKDIR /web
 
 COPY ./web/package.json /app/
 COPY ./web/package-lock.json /app/
