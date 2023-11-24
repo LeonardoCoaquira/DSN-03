@@ -7,7 +7,7 @@ COPY ./web/package-lock.json /app/
 
 RUN npm install
 
-COPY ./web /app
+COPY . /app
 
 EXPOSE 80
 
