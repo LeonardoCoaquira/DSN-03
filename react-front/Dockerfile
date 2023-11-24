@@ -1,29 +1,14 @@
-# Utilizar la imagen oficial de Node.js LTS
-FROM node:14 as build
+FROM node:14
 
-# Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar los archivos de la aplicación (package.json y package-lock.json) para aprovechar la caché de capas de Docker
-COPY package*.json ./
+COPY ./web/package.json /app/
+COPY ./web/package-lock.json /app/
 
-# Instalar dependencias
 RUN npm install
 
-# Copiar el resto de la aplicación
-COPY . .
+COPY ./web /app
 
-# Construir la aplicación React
-RUN npm run build
-
-# Etapa de producción
-FROM nginx:alpine
-
-# Copiar los archivos construidos de la etapa de construcción a la carpeta de Nginx
-COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d
-
-# Comando para iniciar el servidor Nginx
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]

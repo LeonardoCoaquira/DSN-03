@@ -8,14 +8,10 @@ import redis
 from flask_cors import CORS 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:80"}})  # Reemplaza con la URL de tu aplicación React en producción
-
-# Resto de tu código Flask
-
+CORS(app)  # Reemplaza con la URL de tu aplicación React en producción
 
 # Configuración de la conexión a Redis desde la variable de entorno o una URL predeterminada
-#redis_conn = redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379"))
-
+redis_conn = redis.StrictRedis(host='redis', port=6379, decode_responses=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_form():
