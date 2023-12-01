@@ -1,8 +1,8 @@
 # Use a Node 16 base image
 FROM node:16-alpine
 
-# Establecer el directorio de trabajo en /app
-WORKDIR /app
+# Establecer el directorio de trabajo en el directorio de trabajo de la aplicación React
+WORKDIR /usr/src/app
 
 # Copiar los archivos de configuración
 COPY package*.json ./
@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 80
 
 # Comando para ejecutar la aplicación
-CMD ["npx", "serve", "-s", "build"]
+CMD ["npm", "start"]
