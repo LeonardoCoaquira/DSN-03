@@ -1,9 +1,6 @@
 # Utilizar una imagen ligera de Nginx como base
 FROM nginx:alpine
 
-# Eliminar la configuración de Nginx por defecto
-RUN rm -rf /etc/nginx/conf.d/*
-
 # Copiar los archivos de la aplicación al directorio de trabajo de Nginx
 COPY . /usr/share/nginx/html
 
