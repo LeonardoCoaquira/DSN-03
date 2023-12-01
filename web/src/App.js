@@ -18,13 +18,12 @@ const App = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const response = await axios.post('http://dsn-03_app-network:5000/upload', formData, {
+      const response = await axios.post('http://api:5000/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
         responseType: 'arraybuffer',
       });
-
       // Convertir la respuesta binaria a base64
       const arrayBufferView = new Uint8Array(response.data);
       const blob = new Blob([arrayBufferView], { type: 'image/png' });
