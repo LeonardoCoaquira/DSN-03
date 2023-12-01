@@ -1,14 +1,23 @@
-FROM node:14
+# Use a Node 16 base image
+FROM node:16-alpine
 
+# Establecer el directorio de trabajo en /app
 WORKDIR /app
 
-COPY ./package.json /app/
-COPY ./package-lock.json /app/
+# Copiar los archivos de configuración
+COPY package*.json ./
 
+# Instalar dependencias
 RUN npm install
 
-COPY . /app
+# Copiar la aplicación
+COPY . .
 
+# Construir la aplicación para producción
+RUN npm run build
+
+# Exponer el puerto en el que la aplicación se ejecutará
 EXPOSE 80
 
-CMD ["npm", "start"]
+# Comando para ejecutar la aplicación
+CMD ["npx", "serve", "-s", "build"]
