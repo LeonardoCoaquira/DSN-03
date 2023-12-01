@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload CSV File and Display Image</title>
+</head>
+<body>
+  <div>
+    <h1>Upload CSV File and Display Image</h1>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" />
+      <button type="submit">Upload</button>
+    </form>
+
+    <div id="imageContainer" style="display: none; margin-top: 20px;">
+      <img id="uploadedImage" alt="Generated Plot" />
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, '$1');
+      const apiUrl = 'http://api:5000/upload';
+
+      document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-XSRF-TOKEN': csrfToken,
+            },
+          });
+
+          if (response.ok) {
+            const arrayBuffer = await response.arrayBuffer();
+            const base64Image = await blobToBase64(new Blob([new Uint8Array(arrayBuffer)], { type: 'image/png' }));
+
+            document.getElementById('imageContainer').style.display = 'block';
+            document.getElementById('uploadedImage').src = `data:image/png;base64,${base64Image}`;
+          } else {
+            console.error('Error:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+
+      function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            resolve(reader.result.split(',')[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,23 +1,14 @@
-# Use a Node 16 base image
-FROM node:16-alpine
+# Utilizar una imagen ligera de Nginx como base
+FROM nginx:alpine
 
-# Establecer el directorio de trabajo en el directorio de trabajo de la aplicación React
-WORKDIR /usr/src/app
+# Eliminar la configuración de Nginx por defecto
+RUN rm -rf /etc/nginx/conf.d/*
 
-# Copiar los archivos de configuración
-COPY package*.json ./
+# Copiar los archivos de la aplicación al directorio de trabajo de Nginx
+COPY . /usr/share/nginx/html
 
-# Instalar dependencias
-RUN npm install
-
-# Copiar la aplicación
-COPY . .
-
-# Construir la aplicación para producción
-RUN npm run build
-
-# Exponer el puerto en el que la aplicación se ejecutará
+# Exponer el puerto en el que la aplicación se ejecutará (por defecto, Nginx usa el puerto 80)
 EXPOSE 80
 
-# Comando para ejecutar la aplicación
-CMD ["npm", "start"]
+# Comando para iniciar Nginx en primer plano
+CMD ["nginx", "-g", "daemon off;"]
